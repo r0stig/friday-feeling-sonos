@@ -1,6 +1,14 @@
 const { DeviceDiscovery, Sonos, SpotifyRegion } = require('sonos')
 
 const DEVICE_NAME = 'Kök'
+const SONGS = [
+    'spotify:track:6kKJbnWfmVUKnhqa8n17xT',
+    'spotify:track:0fffmMPRtCUDxlGBLfa2kt',
+    'spotify:track:1jr1y7XQdiwu2s9zEyYcBN',
+    'spotify:track:40SKRZTwVekoCmrt3yuuQS',
+    'spotify:track:1L6S78cdI7Md1GHgxRd4Wr',
+    'spotify:track:2y0bJWqWemoabqc7H4ye5O'
+]
 const devices = []
 DeviceDiscovery((device) => {
     devices.push(device)
@@ -33,16 +41,10 @@ async function findSonosByName (name) {
 
 
 async function queueRolandz (sonos, position) {
-    const songs = [
-        'spotify:track:6kKJbnWfmVUKnhqa8n17xT',
-        'spotify:track:0fffmMPRtCUDxlGBLfa2kt',
-        'spotify:track:1jr1y7XQdiwu2s9zEyYcBN',
-        'spotify:track:40SKRZTwVekoCmrt3yuuQS',
-        'spotify:track:1L6S78cdI7Md1GHgxRd4Wr',
-        'spotify:track:2y0bJWqWemoabqc7H4ye5O'
-    ]
     sonos.setSpotifyRegion(SpotifyRegion.EU)
-    return Promise.all(songs.map((song) => sonos.queue(song, position)))
+    const songs = [ ...SONGS ]
+    songs.reverse()
+    return Promise.all(songs.map(async (song) => await sonos.queue(song, position)))
 }
 
 
